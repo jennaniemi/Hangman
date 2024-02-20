@@ -1,6 +1,6 @@
 const input = document.querySelector('input');
 const output = document.querySelector('output');
-const span = document.querySelector('span');
+const span = document.getElementById('guess-count');
 
 const words = [
     "programming",
@@ -17,6 +17,7 @@ const words = [
 
 let randomizedWord = '';
 let maskedWord = '';
+let guessCount = 0;
 
 const newGame = () => {
     const random = Math.floor(Math.random() * words.length);
@@ -24,10 +25,16 @@ const newGame = () => {
     maskedWord = "*".repeat(randomizedWord.length);
     console.log(randomizedWord);
     output.innerHTML = maskedWord;
+    guessCount = 0;
+    updateGuessCount();
+};
+
+const updateGuessCount = () => {
+    span.textContent = guessCount;
 };
 
 const win = () => {
-    alert(`You have guessed right, the word is ${randomizedWord}.`);
+    alert(`You have guessed right, the word is ${randomizedWord}. It took you ${guessCount} guesses.`);
     newGame();
 };
 
@@ -55,6 +62,8 @@ input.addEventListener('keyup', (e) => {
     }
 
     const guess = input.value.toLowerCase();
+    guessCount++;
+    updateGuessCount();
     if (guess === randomizedWord.toLowerCase()) {
         win();
     } else if (guess.length === 1) {
